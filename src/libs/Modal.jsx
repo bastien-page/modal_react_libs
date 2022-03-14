@@ -1,21 +1,32 @@
 import React from "react";
 import styled from "styled-components";
+import { keyframes } from "styled-components";
 import { ThemeProvider } from "styled-components";
 
+const showModal = keyframes`
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+`;
 const ModalContainer = styled.div`
-  background-color: ${(props) => props.theme.backgroundContainer};
+  background-color: ${({ theme }) => theme.backgroundContainer};
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 1000;
-  font-size: ${(props) => props.theme.fontSize};
+  z-index: 2;
+  font-size: ${({ theme }) => theme.fontSize};
+  animation: ${showModal} 0.3s ease-in;
 `;
 
 const ModalBody = styled.div`
   position: relative;
-  background-color: ${(props) => props.theme.backgroundColor};
+  background-color: ${({ theme }) => theme.backgroundColor};
   width: 40%;
   display: flex;
   flex-direction: column;
@@ -23,14 +34,15 @@ const ModalBody = styled.div`
   align-items: center;
   border-radius: 20px;
   padding: 2rem;
-  top: ${(props) => props.theme.verticalAlign};
-  left: ${(props) => props.theme.horizontalAlign};
+  top: ${({ theme }) => theme.topPosition};
+  left: ${({ theme }) => theme.leftPosition};
   transform: translate(
-    -${(props) => props.theme.horizontalAlign},
-    -${(props) => props.theme.verticalAlign}
+    -${({ theme }) => theme.leftPosition},
+    -${({ theme }) => theme.topPosition}
   );
-  box-shadow: ${(props) => props.theme.boxShadow};
-  color: ${(props) => props.theme.color};
+  box-shadow: ${({ theme }) => theme.boxShadow};
+  color: ${({ theme }) => theme.color};
+  animation: ${showModal} 1s ease-in;
 `;
 
 const ModalIcon = styled.div`
@@ -38,15 +50,25 @@ const ModalIcon = styled.div`
   justify-content: center;
   align-items: center;
   border-radius: 50%;
-  background-color: ${(props) => props.theme.color};
+  background-color: ${({ theme }) => theme.color};
   position: absolute;
   top: 0;
   right: 0;
   transform: translate(40%, -40%);
   cursor: pointer;
-  box-shadow: ${(props) => props.theme.boxShadow};
-  color: ${(props) => props.theme.backgroundColor};
+  box-shadow: ${({ theme }) => theme.boxShadow};
+  color: ${({ theme }) => theme.backgroundColor};
   padding: 0.5rem;
+  svg {
+    transform: scale(1);
+    transition: 0.5s ease-in-out;
+  }
+  &:hover {
+    svg {
+      transition: 0.5s ease-in-out;
+      transform: scale(1.8);
+    }
+  }
 `;
 
 function Modal({ style, children, setOpenModal }) {
